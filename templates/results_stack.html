@@ -1,0 +1,136 @@
+<style>
+  .results-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .audio-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    background: var(--block-background-fill, #f9fafb);
+    border-radius: 12px;
+    padding: 14px 16px;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+  }
+
+  .artwork {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+  }
+
+  .artwork img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .track-info {
+    flex: 1;
+  }
+
+  .title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .track-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--body-text-color, #111827);
+  }
+
+  .platform-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: var(--body-text-color-subdued, #6b7280);
+    flex-wrap: wrap;
+    gap: 4px 0;
+  }
+
+  .meta span {
+    padding-right: 14px;
+    margin-right: 14px;
+    border-right: 1px solid #e6e6e6;
+  }
+
+  .meta span:last-child {
+    border-right: none;
+    margin-right: 0;
+    padding-right: 0;
+  }
+
+  .meta b {
+    color: var(--body-text-color, #111827);
+    font-weight: 600;
+  }
+
+  .camelot {
+    background: rgba(37, 99, 235, 0.08);
+    color: #2563eb;
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-weight: 600;
+  }
+</style>
+
+<section class="results-stack">
+  {% for entry in entries %}
+  <article class="audio-card">
+    <div class="artwork">
+      <img src="{{ entry.artwork_url }}" alt="Artwork for {{ entry.name }}" />
+    </div>
+
+    <div class="track-info">
+      <div class="title-row">
+        {% if entry.artist is defined %}
+        <div class="track-title">{{ entry.artist }} - {{ entry.title }}</div>
+        {% else %}
+        <div class="track-title">{{ entry.title }}</div>
+        {% endif %}
+
+        <!-- Spotify icon -->
+        {% if entry.source == "soundcloud" %}
+        <img src="https://cdn.simpleicons.org/soundcloud/ff5500" width="24" alt="SoundCloud">
+        {% else %}
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#3b82f6"
+          width="24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
+        </svg>
+        {% endif %}
+      </div>
+
+      <div class="meta">
+        {% if entry.analysis.bpm is defined %}
+        <span>BPM <b>{{ "%.2f"|format(entry.analysis.bpm) }}</b></span>
+        {% endif %}
+
+        {% if entry.analysis.length is defined %}
+        <span>Length <b>{{ entry.length }}</b></span>
+        {% endif %}
+
+        {% if entry.analysis.key is defined and entry.analysis.scale is defined %}
+        <span>Key <b>{{ entry.analysis.key }} {{ entry.analysis.scale }}</b></span>
+        {% endif %}
+
+        {% if entry.analysis.camelot is defined %}
+        <span>Camelot <span class="camelot">{{ entry.analysis.camelot }}</span></span>
+        {% endif %}
+      </div>
+    </div>
+  </article>
+  {% endfor %}
+</section>

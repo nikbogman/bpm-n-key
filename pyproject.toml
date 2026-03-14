@@ -1,0 +1,18 @@
+[project]
+name = "bpm-n-key"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "essentia>=2.1b6.dev1389",
+    "ffmpeg-python>=0.2.0",
+    "gradio>=6.9.0",
+    "jinja2>=3.1.6",
+    "requests>=2.32.5",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.6",
+]
